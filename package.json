@@ -1,0 +1,21 @@
+{
+  "name": "gpt-holdem",
+  "version": "0.1.0",
+  "description": "A transformer-based poker bot",
+  "main": "start.js",
+  "scripts": {
+    "start": "python -m http.server",
+    "benchmark": "esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptholdem.js external/gptholdem.ts && node benchmark.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Pazolli",
+  "license": "MIT",
+  "dependencies": {
+    "onnxruntime-node": "^1.24.3",
+    "lowdb": "^7.0.1",
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}

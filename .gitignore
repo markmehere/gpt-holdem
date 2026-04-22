@@ -1,0 +1,4 @@
+results/benchmark*
+node_modules
+bcache*
+.DS_Store

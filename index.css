@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'Perth';
+  src: url('/assets/perth.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-017F;
+}
+
+.continueButton, .callButton, .raiseButton, .foldButton, .allInButton {
+  position: absolute;
+  width: 18vw;
+  height: 5vw;
+  font-size: 2vw;
+  background: none;
+  border-radius: 2vw;
+  box-shadow: none;
+  font-family: 'Perth', 'Jost', 'Futura', sans-serif;
+  background-color: rgba(255, 255, 255, 0.5)
+}
+
+.upButton, .downButton {
+  position: absolute;
+  top: calc(100vh - 14.8vw);
+  font-size: 3vw;
+  line-height: 3vw;
+  height: 4vw;
+  padding-bottom: 0.5vw;
+  width: 4vw;
+  border-radius: 2vw;
+  box-shadow: none;
+  font-family: 'Perth', 'Jost', 'Futura', sans-serif;
+  background-color: rgba(255, 255, 255, 0.5)
+}
+
+.upButton {
+  left: 80vw;
+}
+
+.downButton {
+  left: 94vw;
+}
+
+.continueButton {
+  top: 59vh;
+  left: 41vw;
+}
+
+.callButton {
+  left: 4vw;
+  top: calc(100vh - 15vw);
+}
+
+.foldButton {
+  left: 4vw;
+  top: calc(100vh - 8vw);
+}
+
+.allInButton {
+  left: 80vw;
+  top: calc(100vh - 8vw);
+}
+
+.betAmountLabel {
+  position: absolute;
+  text-align: center;
+  color: white;
+  width: 10vw;
+  left: 84vw;
+  top: calc(100vh - 14.2vw);
+  height: 6vw;
+  margin: 0;
+  font-size: 32px;
+  font-family: 'Perth', 'Jost', 'Futura', sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #066d75;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+}

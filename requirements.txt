@@ -1,0 +1,5 @@
+torch==2.10.0+cu13
+numpy==2.2.6
+requests==2.32.5
+tiktoken==0.12.0
+onnx==1.20.1
