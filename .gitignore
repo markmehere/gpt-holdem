@@ -2,3 +2,14 @@ results/benchmark*
 node_modules
 bcache*
 .DS_Store
+.venv
+train.bin
+val.bin
+ckpt.pt
+eckpt.pt
+evolution-v*
+epoker-split*
+__pycache__
+trash
+.bcache*
+*.old.*

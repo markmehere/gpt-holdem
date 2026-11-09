@@ -17,6 +17,7 @@ export interface PlayerExternals {
   totalHands: number;
   timesSeen: number;
   isHuman: boolean;
+  sequoiaRating: number;
   history: {
     type: 'raise' | 'call' | 'fold' | 'all-in' | 'check' | 'show';
     level?: number;
@@ -105,7 +106,7 @@ export interface TableExternals {
 
 export type RandomExternal = () => number;
 
-export type MonteResult = { 
+export type MonteResult = {
   win: number,
   draw: number,
   loss: number

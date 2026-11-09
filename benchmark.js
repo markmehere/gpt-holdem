@@ -4,6 +4,8 @@ const seedrandom = require("seedrandom");
 const fs = require("fs");
 const { JSONFilePreset } = require("lowdb/node");
 const externalgpt = require("./external/gptholdem");
+const externalgptevo = require("./external/gptevo");
+const externalsequoia = require("./external/sequoia");
 
 const debug = false;
 const use_external = true;
@@ -15,6 +17,7 @@ global.externalPlay = async (you, table, run, rand) => {
     console.log(run.runBetterMonte())
   }
   if (use_external) {
+    // change to externalgptevo or externalsequoia if desired
     return await externalgpt.gptHoldemPlay(you, table, run, rand);
   }
   else {
@@ -22,7 +25,7 @@ global.externalPlay = async (you, table, run, rand) => {
   }
 }
 
-const NO_OF_MATCHES = 4;
+const NO_OF_MATCHES = 80;
 
 const seeder =  '8QEO5tHIK7CsmDDf7rIhlKVJu3qK2oQs8lWjxlvy7lGANG5uLwTc19TlH8MIU7M1'
               + 'udpK0WrnCEUob2uwuWvqPX42wWhV0TG4rNmztIm7YKyiaQs2rhGIGsYyIFkVsNZQ'
@@ -40,11 +43,11 @@ function getSeed(i) {
 let settings = [
   "gbr",
   "mccfrfinisher",
-  "mccfr",
+  "gptevo",
   "gptholdem",
   "wildlike",
-  "alwaysallin",
-  "amalgamatedalt"
+  "wild",
+  "sequoia"
 ];
 const tally = [0, 0, 0, 0, 0, 0, 0];
 const tlen = [0, 0, 0, 0, 0, 0, 0];

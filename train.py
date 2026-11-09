@@ -1,21 +1,3 @@
-"""
-This training script can be run both on a single gpu in debug mode,
-and also in a larger training run with distributed data parallel (ddp).
-
-To run on a single GPU, example:
-$ python train.py --batch_size=32 --compile=False
-
-To run with DDP on 4 gpus on 1 node, example:
-$ torchrun --standalone --nproc_per_node=4 train.py
-
-To run with DDP on 4 gpus across 2 nodes, example:
-- Run on the first (master) node with example IP 123.456.123.456:
-$ torchrun --nproc_per_node=8 --nnodes=2 --node_rank=0 --master_addr=123.456.123.456 --master_port=1234 train.py
-- Run on the worker node:
-$ torchrun --nproc_per_node=8 --nnodes=2 --node_rank=1 --master_addr=123.456.123.456 --master_port=1234 train.py
-(If your cluster does not have Infiniband interconnect prepend NCCL_IB_DISABLE=1)
-"""
-
 import os
 import time
 import math
@@ -44,7 +26,7 @@ batch_size = 64
 block_size = 26 # 26 plays remembered
 
 # baby GPT model :)
-n_layer = 5
+n_layer = 4
 n_head = 9
 n_embd = 27
 n_input = 27
@@ -69,9 +51,18 @@ grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
 decay_lr = True # whether to decay the learning rate
 
 # system
-device = 'cuda' # examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1' etc., or try 'mps' on macbooks
-dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else 'float16' # 'float32', 'bfloat16', or 'float16', the latter will auto implement a GradScaler
-compile = False # use PyTorch 2.0 to compile the model to be faster
+if torch.cuda.is_available():
+    device = 'cuda'
+elif torch.backends.mps.is_available():
+    device = 'mps'
+else:
+    device = 'cpu'
+device_type = device      # device may include an index but not in this script
+if device_type == 'cuda' and torch.cuda.is_bf16_supported():
+    dtype = 'bfloat16'
+else:
+    dtype = 'float16'
+compile = False           # use PyTorch 2.0 to compile the model to be faster
 
 # configurator here!
 
@@ -85,12 +76,21 @@ print(f"tokens per iteration will be: {tokens_per_iter:,}")
 
 os.makedirs(out_dir, exist_ok=True)
 torch.manual_seed(1337 + seed_offset)
-torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
-torch.backends.cudnn.allow_tf32 = True # allow tf32 on cudnn
-device_type = 'cuda' if 'cuda' in device else 'cpu' # for later use in torch.autocast
+
+if device_type == 'cuda':
+    torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
+    torch.backends.cudnn.allow_tf32 = True # allow tf32 on cudnn
+
 # note: float16 data type will automatically use a GradScaler
 ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
-ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
+if device_type == 'cpu' or dtype == 'float32':
+    ctx = nullcontext()
+else:
+    try:
+        ctx = torch.amp.autocast(device_type=device_type, dtype=ptdtype)
+    except Exception as e:  # older torch without MPS autocast
+        print(f"autocast unavailable on {device_type} ({e}); running in float32")
+        ctx = nullcontext()
 
 # poor man's data loader
 data_dir = 'elementary'
@@ -148,7 +148,10 @@ model = GPT(gptconf)
 model.to(device)
 
 # initialize a GradScaler. If enabled=False scaler is a no-op
-scaler = torch.cuda.amp.GradScaler(enabled=(dtype == 'float16'))
+try:
+    scaler = torch.amp.GradScaler(device_type, enabled=(dtype == 'float16' and device_type != 'cpu'))
+except Exception:
+    scaler = torch.amp.GradScaler('cpu', enabled=False)
 
 # optimizer
 optimizer = model.configure_optimizers(weight_decay, learning_rate, (beta1, beta2), device_type)

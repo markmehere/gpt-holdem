@@ -183,6 +183,7 @@ const AIType = {
   AlwaysBluff: "alwaysbluff",
   AlwaysAllIn: "alwaysallin",
   AlwaysBet: "alwaysbet",
+  SelectiveAllIn: "selectiveallin",
   GBR: "gbr",
   AggressiveGBR: "aggressivegbr",
   AlwaysCall: "alwayscall",
@@ -191,21 +192,23 @@ const AIType = {
   MCCFRFinisher: "mccfrfinisher",
   DefensiveMCCFR: "defensivemccfr",
   GPTHoldem: "gptholdem",
-  External: "external",
+  GPTEvo: "gptevo",
+  Sequoia: "sequoia",
+  External: "external"
 };
 
 loader.load((_loader, resources) => {
   app.start();
-  const pokerUi = new PokerUI(camera, resources, { 
+  const pokerUi = new PokerUI(camera, resources, {
     highCardForDealer: true,
     humanController,
     useAINames: true,
     aiTypes: [
       AIType.MCCFRFinisher,
-      AIType.AmalgamatedAlt,
+      AIType.Sequoia,
       AIType.GBR,
       AIType.GPTHoldem,
-      AIType.SimpleLong,
+      AIType.GPTEvo,
       AIType.WildLike
     ],
     isSmallScreen: true

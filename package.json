@@ -5,7 +5,7 @@
   "main": "start.js",
   "scripts": {
     "start": "python -m http.server",
-    "benchmark": "esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptholdem.js external/gptholdem.ts && node benchmark.js",
+    "benchmark": "esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptevo.js external/gptevo.ts && esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/sequoia.js external/sequoia.ts && esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptholdem.js external/gptholdem.ts && node benchmark.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mark Pazolli",
