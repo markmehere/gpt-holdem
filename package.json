@@ -5,6 +5,7 @@
   "main": "start.js",
   "scripts": {
     "start": "python -m http.server",
+    "build": "mkdir -p dist && cp *.onnx dist && cp *.html dist && cp *.css dist && cp -r ux dist && cp poker.js play.js dist && cp -r assets dist && cd dist && zip -r ../gpt-holdem.zip . -x \"*.DS_Store\"",
     "benchmark": "esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptevo.js external/gptevo.ts && esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/sequoia.js external/sequoia.ts && esbuild --external:onnxruntime-node --bundle --format=cjs --outfile=external/gptholdem.js external/gptholdem.ts && node benchmark.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

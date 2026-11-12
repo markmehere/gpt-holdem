@@ -59,12 +59,12 @@ elif torch.backends.mps.is_available():
     device = 'mps'
 else:
     device = 'cpu'
+device_type = device
 if device_type == 'cuda' and torch.cuda.is_bf16_supported():
     dtype = 'bfloat16'
 else:
     dtype = 'float16'
-compile = False
-device_type = device      # device may include an index but not in this script
+compile = False     # device may include an index but not in this script
 
 # -----------------------------------------------------------------------------
 # optional: allow overriding any of the above from the command line / a config file

@@ -13,3 +13,6 @@ __pycache__
 trash
 .bcache*
 *.old.*
+external/*.js
+dist
+*.zip

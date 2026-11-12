@@ -75,7 +75,7 @@ For a better understanding review the `external` directory that contains the ful
 
 The original model was trained on data from the play of existing bots. You can view the games [here](elementary/human-readable.txt) or alternatively the raw 114,000 vectors [here](elementary/training-data.txt). Each vector appears in a set with the last element of the last vector in the set representing the preferred action based upon preceding information.
 
-Training is done using [train.py](train.py), which is based upon Andrej Karpathy's [nanoGPT](https://github.com/karpathy/nanoGPT). Training takes around 26 minutes on an NVIDIA 5060 Ti 16G.
+Training is done using [train.py](train.py), which is based upon Andrej Karpathy's [nanoGPT](https://github.com/karpathy/nanoGPT). Training takes around twenty minutes on either an NVIDIA 5060 Ti 16G or MacBook Pro M2. The model is very small (smaller than even simple language models) so VRAM or unified memory is unlikely to be an issue.
 
 The training set derives from good play in...
 
@@ -92,7 +92,7 @@ The model is limited by the quality of other bots in its training set.
 
 The second model, _evo_, is trained based upon the optimal decision of four to five alternate rivers in varied game conditions played to completion. You can view the games [here](evolution/human-readable-1.txt) or alternatively the raw 86,500 vectors [here](evolution/training-data.txt). An additional set of training vectors were added when trying to improve performance against Sequoia that you can view [here](evolution/human-readable-10.txt).
 
-_Evo_ was fine tuned from the original model using [finetune.py](finetune.py) and, on a MacBook Pro M2, can be fine-tuned in minutes. 
+_Evo_ was fine tuned from the original model using [finetune.py](finetune.py). Fine-tuning is somewhat faster than training from scratch, so most computers will complete the workload in matter of minutes.
 
 The learning rate is far larger than would usually be used in fine-tuning making it somewhat different from its base model. This is a feature, not a bug, as a similar model might compete for the same wins as its parent ultimately lessening the performance of both.
 
